@@ -36,6 +36,7 @@ async function createDeveloper(nombre, edad, habilidades) {
     let client;
     try {
         client = await conexion.pool.connect();
+        console.log(nombre, edad, habilidades)
         const result = await client.query('INSERT INTO desarrolladores (nombre, edad, habilidades) VALUES ($1, $2, $3) RETURNING *', [nombre, edad, habilidades]);
         return result.rows[0];
     } catch (error) {
