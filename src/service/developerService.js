@@ -4,7 +4,7 @@ async function getAllDevelopers() {
     let client;
     try {
         client = await conexion.pool.connect();
-        const result = await client.query('SELECT * FROM desarrolladores');
+        const result = await client.query('SELECT * FROM desarrolladores ORDER BY id');
         return result.rows;
     } catch (error) {
         console.error('Error al obtener desarrolladores:', error);
@@ -21,7 +21,7 @@ async function getDeveloperById(id) {
     try {
         client = await conexion.pool.connect();
         const result = await client.query('SELECT * FROM desarrolladores WHERE id = $1', [id]);
-        return result.rows[0];
+        return result.rows[0] || null;
     } catch (error) {
         console.error('Error al obtener desarrollador por ID:', error);
         throw new Error('Error al obtener desarrollador por ID');
@@ -70,6 +70,7 @@ async function deleteDeveloper(id) {
     try {
         client = await conexion.pool.connect();
         await client.query('DELETE FROM desarrolladores WHERE id = $1', [id]);
+        return true;
     } catch (error) {
         console.error('Error al eliminar desarrollador:', error);
         throw new Error('Error al eliminar desarrollador');
